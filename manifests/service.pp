@@ -1,7 +1,8 @@
 define google_auth_proxy::service(
   $ensure = true,
-  $enabled = true,
 ) {
+
+  # validate here
 
   include ::systemd
 
@@ -9,7 +10,7 @@ define google_auth_proxy::service(
 
   file{$unit_file:
     ensure  => $ensure ? {
-      'true'  => 'file',
+      true    => 'file',
       default => $ensure
     },
     owner   => 'root',
@@ -18,8 +19,8 @@ define google_auth_proxy::service(
     content => template("${module_name}/systemd_unit_file.erb"),
   } ~> Exec['systemctl-daemon-reload'] ->
   service{$name:
-    ensure  => $ensure,
-    enabled => $enabled,
+    ensure => $ensure,
+    enable => $ensure,
   }
 
 }
