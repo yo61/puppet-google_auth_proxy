@@ -4,7 +4,7 @@ After=syslog.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/google_auth_proxy -config /etc/google_auth_proxy/gap_<%= @name %>.cfg
+ExecStart=/usr/bin/google_auth_proxy -config /etc/google_auth_proxy/<%= @name %>.cfg
 KillSignal=SIGINT
 Restart=on-failure
 StandardError=syslog
