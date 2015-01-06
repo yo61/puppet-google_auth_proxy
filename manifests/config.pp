@@ -1,5 +1,5 @@
 define google_auth_proxy::config(
-  $ensure = 'present',
+  $ensure = true,
   $redirect_url,
   $google_apps_domains,
   $upstreams,
@@ -17,8 +17,8 @@ define google_auth_proxy::config(
   $cfg_file = "${::google_auth_proxy::params::cfg_base}/${name}.cfg"
   file{$cfg_file:
     ensure => $ensure ? {
-      'present' => 'file',
-      default   => $ensure,
+      true    => 'file',
+      default => $ensure,
     },
     owner   => $user,
     group   => $group,

@@ -1,5 +1,5 @@
 define google_auth_proxy(
-  $ensure = 'present',
+  $ensure = true,
   $redirect_url,
   $google_apps_domains,
   $upstreams,
@@ -20,7 +20,7 @@ define google_auth_proxy(
 
   # add validation here
 
-  if $ensure == 'present' {
+  if $ensure == true {
     include ::google_auth_proxy::install
     include ::nginx
   }
