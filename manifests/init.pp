@@ -40,7 +40,7 @@ define google_auth_proxy(
     group               => $group,
   }
 
-  google_auth_proxy::service{$gap_name:
+  google_auth_proxy::service{$name:
     ensure => $ensure,
   }
 
