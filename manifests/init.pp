@@ -45,13 +45,19 @@ define google_auth_proxy(
   }
 
   nginx::resource::upstream{$gap_name:
-    ensure                => $ensure,
+    ensure           => $ensure ? {
+      true    => 'present',
+      default => 'absent',
+    },
     members               => ["${gap_host}:${gap_port}"],
     upstream_fail_timeout => $gap_upstream_fail_timeout,
   }
   
   nginx::resource::vhost{$app_name:
-    ensure           => $ensure,
+    ensure           => $ensure ? {
+      true    => 'present',
+      default => 'absent',
+    },
     listen_ip        => $listen_ip,
     listen_port      => $listen_port,
     proxy            => "http://${gap_name}",
