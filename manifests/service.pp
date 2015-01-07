@@ -1,5 +1,5 @@
 define google_auth_proxy::service(
-  $ensure = true,
+  $ensure = 'present',
 ) {
 
   # validate here
@@ -11,8 +11,8 @@ define google_auth_proxy::service(
 
   file{$unit_file:
     ensure  => $ensure ? {
-      true    => 'file',
-      default => $ensure
+      'present' => 'file',
+      default   => $ensure
     },
     owner   => 'root',
     group   => 'root',
@@ -21,10 +21,13 @@ define google_auth_proxy::service(
   } ~> Exec['systemctl-daemon-reload'] ->
   service{$service_name:
     ensure => $ensure ? {
-      true    => 'running',
-      default => 'stopped',
+      'present' => 'running',
+      default   => 'stopped',
     },
-    enable => $ensure,
+    enable => $ensure ? {
+      'present' => true,
+      default   => false,
+    },
   }
 
 }

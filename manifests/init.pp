@@ -1,5 +1,5 @@
 define google_auth_proxy(
-  $ensure = true,
+  $ensure = 'present',
   $redirect_url,
   $google_apps_domains,
   $upstreams,
@@ -19,8 +19,9 @@ define google_auth_proxy(
 ) {
 
   # add validation here
+  validate_re($ensure,'^(?:present|absent)$')
 
-  if $ensure == true {
+  if $ensure == 'present' {
     include ::google_auth_proxy::install
     include ::nginx
   }
@@ -45,19 +46,13 @@ define google_auth_proxy(
   }
 
   nginx::resource::upstream{$gap_name:
-    ensure           => $ensure ? {
-      true    => 'present',
-      default => 'absent',
-    },
+    ensure                => $ensure,
     members               => ["${gap_host}:${gap_port}"],
     upstream_fail_timeout => $gap_upstream_fail_timeout,
   }
   
   nginx::resource::vhost{$app_name:
-    ensure           => $ensure ? {
-      true    => 'present',
-      default => 'absent',
-    },
+    ensure           => $ensure,
     listen_ip        => $listen_ip,
     listen_port      => $listen_port,
     proxy            => "http://${gap_name}",
