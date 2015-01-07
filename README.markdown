@@ -25,7 +25,7 @@ This module makes it easy to deploy a proxy for an existing application.
 
 This module was developed for, and only tested on, CentOS 7.
 
-It was also developed for use in an AWS environment with SSL termination at the ELB, ie. there is no provision to set up ```https``` proxies. I may add this at some stage in the future. PRs welcome. :)
+It was also developed for use in an AWS environment with SSL termination at the ELB, ie. there is no provision to set up `https` proxies. I may add this at some stage in the future. PRs welcome. :)
 
 ## Architecture
 
@@ -72,7 +72,7 @@ yumrepo{'yo61':
 
 Creating the proxy is as simple as this:
 ```puppet
-  $app_url = 'https://your_app.example.com',
+  $redirect_url = 'https://your_app.example.com/oauth2/callback',
   $auth_domains = ['your_domain.com']
   $upstreams = ['http://localhost:8080']
   $cookie_secret = <seed string for secure cookies>
@@ -80,7 +80,7 @@ Creating the proxy is as simple as this:
   $client_secret = <your client secret>
 
   google_auth_proxy{'puppetboard_stage':
-    redirect_url        => $app_url,
+    redirect_url        => $redirect_url,
     google_apps_domains => $auth_domains,
     upstreams           => $upstreams,
     cookie_secret       => $cookie_secret,
@@ -98,34 +98,64 @@ This is the only public component of the module. It installs and sets up the goo
 
 **Parameters within `google_auth_proxy`:**
 #####`ensure`
+Specify whether the proxy is present or absent.
+Defaults to 'present'.
+Valid values are 'present' and 'absent'.
 #####`redirect_url`
+The OAuth Redirect URL. eg. `https://your_app.example.com/oauth2/callback`
 #####`google_apps_domains`
+Authenticate against the given Google apps domain. May contain multiple values, ie. can be a string or an array of strings.
 #####`upstreams`
+The http url(s) of the upstream endpoint. May contain multiple values, ie. can be a string or an array of strings. If multiple, routing is based on path (what does this even mean?)
 #####`cookie_secret`
+The seed string for secure cookies.
 #####`client_id`
+The Google OAuth Client ID: ie: "123456.apps.googleusercontent.com"
 #####`client_secret`
-#####`proxy_host = '*'`
-#####`proxy_port = '80'`
-#####`proxy_connect_timeout = '1'`
-#####`proxy_read_timeout = '30'`
-#####`gap_host = 'localhost'`
-#####`gap_port = '4180'`
-#####`gap_upstream_fail_timeout = '10s'`
-#####`user = 'root'`
-#####`group = 'root'`
+The OAuth Client Secret
+#####`proxy_host`
+The IP on which the nginx instance should listen.
+Default: '*' (all IPs)
+#####`proxy_port`
+The port on which the nginx instance should listen.
+Default: '80'.
+#####`proxy_connect_timeout`
+Timeout for the connection to the upstream server, ie. nginx -> google_auth_proxy
+Default: 1
+#####`proxy_read_timeout`
+Timeout for the response of the upstream server, ie. the google_auth_proxy
+Default: 30
+#####`gap_host`
+Hostname or IP on which the google_auth_proxy daemon should listen.
+Default: 'localhost'
+#####`gap_port`
+Port on which he google_auth_proxy daemon should listen.
+Default: '4180'
+#####`gap_upstream_fail_timeout`
+See: http://wiki.nginx.org/HttpUpstreamModule#server
+Default: '10s'
+#####`user`
+The user as which the google_auth_proxy daemon will run.
+Default: 'root'
+#####`group`
+The group as which the google_auth_proxy daemon will run.
+Default: 'root'
 
 ## Reference
 
-Here, list the classes, types, providers, facts, etc contained in your module. This section should include all of the under-the-hood workings of your module so people know what the module is touching on their system but don't need to mess with things. (We are working on automating this section!)
+To be written
 
 ## Limitations
 
-This is where you list OS compatibility, version compatibility, etc.
+This module was written and tested on CentOS 7. It could be modified to work on other platforms but I have no need to do so at the present time. PRs (with tests) welcome :)
 
 ## Development
 
-Since your module is awesome, other users will want to play with it. Let them know what the ground rules for contributing are.
+Feel free to improve anything.
 
-## Release Notes/Contributors/Etc **Optional**
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
 
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header. 
