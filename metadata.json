@@ -1,24 +1,21 @@
 {
   "name": "yo61-google_auth_proxy",
   "version": "0.1.0",
-  "author": "yo61",
-  "summary": "Puppet module for google_auth_proxy on RHEL/CentOS with nginx",
+  "author": "Robin Bowes <robin.bowes@yo61.com>",
+  "summary": "Puppet module to deploy google_auth_proxy with nginx",
   "license": "Apache 2.0",
   "source": "https://github.com/yo61/puppet-google_auth_proxy",
   "project_page": "https://github.com/yo61/puppet-google_auth_proxy",
   "issues_url": "https://github.com/yo61/puppet-google_auth_proxy/issues",
-  "dependencies": [
+  "operatingsystem_support": [
     {
-      "name": "puppetlabs-stdlib",
-      "version_requirement": ">= 1.0.0"
-    },
-    {
-      "name": "jfryman-nginx",
-      "version_requirement": ">= 0.2.1"
-    },
-    {
-      "name": "camptocamp-systemd",
-      "version_requirement": ">= 0.1.4"
+    "operatingsystem":"RedHat",
+    "operatingsystemrelease":[ "7.0" ]
     }
+   ],
+  "dependencies": [
+    { "name": "puppetlabs-stdlib", "version_requirement": ">= 1.0.0" },
+    { "name": "jfryman-nginx", "version_requirement": ">= 0.2.1" },
+    { "name": "camptocamp-systemd", "version_requirement": ">= 0.1.4" }
   ]
 }
