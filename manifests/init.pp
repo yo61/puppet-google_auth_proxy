@@ -53,8 +53,8 @@ define google_auth_proxy(
   
   nginx::resource::vhost{$app_name:
     ensure           => $ensure,
-    listen_ip        => $listen_ip,
-    listen_port      => $listen_port,
+    listen_ip        => $proxy_host,
+    listen_port      => $proxy_port,
     proxy            => "http://${gap_name}",
     proxy_set_header => [
       'Host $host',
