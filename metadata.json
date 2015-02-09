@@ -1,6 +1,6 @@
 {
   "name": "yo61-google_auth_proxy",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Robin Bowes <robin.bowes@yo61.com>",
   "summary": "Puppet module to deploy a Google OAuth2 proxy using nginx and google_auth_proxy from bitly",
   "license": "Apache-2.0",
