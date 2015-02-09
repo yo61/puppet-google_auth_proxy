@@ -1,11 +1,11 @@
 define google_auth_proxy(
-  $ensure = 'present',
   $redirect_url,
   $google_apps_domains,
   $upstreams,
   $cookie_secret,
   $client_id,
   $client_secret,
+  $ensure = 'present',
   $proxy_host = '*',
   $proxy_port = '80',
   $proxy_connect_timeout = '1',
@@ -52,11 +52,11 @@ define google_auth_proxy(
   }
   
   nginx::resource::vhost{$app_name:
-    ensure           => $ensure,
-    listen_ip        => $proxy_host,
-    listen_port      => $proxy_port,
-    proxy            => "http://${gap_name}",
-    proxy_set_header => [
+    ensure                => $ensure,
+    listen_ip             => $proxy_host,
+    listen_port           => $proxy_port,
+    proxy                 => "http://${gap_name}",
+    proxy_set_header      => [
       'Host $host',
       'X-Real-IP $remote_addr',
       'X-Scheme $scheme',

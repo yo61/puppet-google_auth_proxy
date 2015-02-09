@@ -1,11 +1,11 @@
 define google_auth_proxy::config(
-  $ensure = 'present',
   $redirect_url,
   $google_apps_domains,
   $upstreams,
   $cookie_secret,
   $client_id,
   $client_secret,
+  $ensure = 'present',
   $user = 'root',
   $group = 'root',
   $mode = '0400',
@@ -15,11 +15,12 @@ define google_auth_proxy::config(
 
   include ::google_auth_proxy::params
   $cfg_file = "${::google_auth_proxy::params::cfg_base}/${name}.cfg"
+  $cfg_file_ensure = $ensure ? {
+    'present' => 'file',
+    default   => $ensure,
+  }
   file{$cfg_file:
-    ensure => $ensure ? {
-      'present' => 'file',
-      default   => $ensure,
-    },
+    ensure  => $cfg_file_ensure,
     owner   => $user,
     group   => $group,
     mode    => $mode,
