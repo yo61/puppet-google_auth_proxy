@@ -33,7 +33,7 @@ define google_auth_proxy::service(
   }->
   service{$service_name:
     ensure => $service_ensure,
-    enable => $service_ensure,
+    enable => $service_enable,
   }
   File[$unit_file]~>
   Service[$service_name]
