@@ -4,8 +4,6 @@ define google_auth_proxy::service(
 
   # validate here
 
-  include ::systemd
-
   $service_name = "gap_${name}"
   $unit_file = "/usr/lib/systemd/system/${service_name}.service"
 
@@ -27,10 +25,17 @@ define google_auth_proxy::service(
     group   => 'root',
     mode    => '0644',
     content => template("${module_name}/systemd_unit_file.erb"),
-  } ~> Exec['systemctl-daemon-reload'] ->
+  }~>
+  exec{"${name}-systemctl-daemon-reload":
+    command     => 'systemctl daemon-reload',
+    refreshonly => true,
+    path        => $::path,
+  }->
   service{$service_name:
     ensure => $service_ensure,
     enable => $service_ensure,
   }
+  File[$unit_file]~>
+  Service[$service_name]
 
 }
